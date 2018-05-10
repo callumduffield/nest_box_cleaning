@@ -22,6 +22,7 @@ i<-1
 start_time <- Sys.time()
 system.time({
 for(i in 1:length(files)){
+  
 
 	#DETERMINE THE NUMBER OF LINES TO READ FROM THE TEXT
 	#THE LAST 38 LINES ARE NOT NEEDED
