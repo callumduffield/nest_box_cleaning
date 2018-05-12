@@ -22,7 +22,7 @@ df<-list()
 i<-1
 start_time <- Sys.time()
 for(i in 1:length(files)){
-
+  print(paste(files[i]))
 	#DETERMINE THE NUMBER OF LINES TO READ FROM THE TEXT
 	#THE LAST 38 LINES ARE NOT NEEDED
 	n.rows<-length(readLines(paste(files[i]))) - 38
@@ -32,7 +32,7 @@ for(i in 1:length(files)){
   #Add column with file name
 	data$file<-files[i]
   df[[i]]<-data
-  unique(pitdata$pit)
+  print(paste("END" ,i, "of" ,length(files)))
 
 }
 #MAKE ALL DATA FRAMES WITHIN LIST 1 DATA FRAME
@@ -68,6 +68,4 @@ end_time <- Sys.time()
 start_time-end_time
 str(pitdata)
 
-write.csv(pitdata,"alldata.csv")
-
-alldata<-read.csv("alldata.csv")
+#write.csv(pitdata,"alldata.csv")
