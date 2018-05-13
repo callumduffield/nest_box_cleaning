@@ -37,7 +37,7 @@ pitdata$new.date<-pitdata$date+pitdata$diff
 
 
 trials<-unique(pitdata$trial)
-i=1
+i=2
 #for(i in 1:length(trials))
 trial.df<-as.data.frame(pitdata[pitdata$trial==trials[i],])
 unique(trial.df$pit)
@@ -56,10 +56,10 @@ trial.df.ordered$neighbour<-ifelse(trial.df.ordered$pit %in% neighbourlist,TRUE,
 trial.df.ordered<-trial.df.ordered[!trial.df.ordered$neighbour,]
 table(trial.df.ordered$pit)
 trial.df.ordered$pit.correct<-ifelse(trial.df.ordered$pit %in% idlist,TRUE,FALSE)
-trial.df.wrong<-trial.df.ordered[!trial.df.ordered$pit.correct,]
-
-trial.df.wrong$value <- NA
-trial.df.wrong$low.thresh <- NA
+#trial.df.wrong<-trial.df.ordered[!trial.df.ordered$pit.correct,]
+str(trial.df.ordered)
+trial.df.ordered$value <- NA
+trial.df.ordered$low.thresh <- NA
 sums<-logical(5)
 for(i in 1:NROW(trial.df.wrong)){
   
@@ -73,18 +73,35 @@ for(i in 1:NROW(trial.df.wrong)){
     ifelse(sum(sums)==1,trial.df.wrong$low.thresh[i]<-idlist[which(sums==1)],NA)
   }
 }
+j=1
+
+for(i in 1:NROW(trial.df.ordered[!trial.df.ordered$pit.correct,])){
+  
+  
+  for(j in 1:length(idlist)){
+    if(sum(str_split_fixed(trial.df.ordered[!trial.df.ordered$pit.correct,]$pit[i],"",10)==str_split_fixed(idlist[j],"",10))==9)
+    {trial.df.ordered[!trial.df.ordered$pit.correct,]$value[i]<-idlist[j]}
+    
+    if(is.na(trial.df.ordered[!trial.df.ordered$pit.correct,]$value[i]))
+    {sums[j]<-sum(str_split_fixed(trial.df.ordered[!trial.df.ordered$pit.correct,]$pit[i],"",10)==str_split_fixed(idlist[j],"",10))==8}
+    ifelse(sum(sums)==1,trial.df.ordered[!trial.df.ordered$pit.correct,]$low.thresh[i]<-idlist[which(sums==1)],NA)
+  }
+}
+
+table(trial.df.ordered$pit)
+
 str(trial.df.wrong)
 str(trial.df.ordered)
 trial.new<-merge(trial.df.ordered,trial.df.wrong,by=c("pit","date","new.date","reader","trial","type","neighbour","julian","save.date","pit.correct","diff"),all=T)
 trial.new$new_pit<-trial.new$pit
 str(trial.new)
-trial.new[!trial.new$pit.correct,]$new_pit<-as.character(trial.new[!trial.new$pit.correct,]$value)
+trial.new[!trial.new$pit.correct,]$new_pit<-trial.new[!trial.new$pit.correct,]$value
 
 trial.new$new_pit<-droplevels(trial.new$new_pit)
 trial.new$pit<-droplevels(trial.new$pit)
 trial.new$new_pit<-as.character(trial.new$new_pit)
-
-
-
+table(trial.new$new_pit)
+unique(trial.new$new_pit)
+sum(is.na(trial.new$new_pit))
 
 
