@@ -65,7 +65,7 @@ pitdata$V1<-NULL
 pitdata<-separate(pitdata, col="file", sep=" ", into=c("trial", "type", "save.date"))
 
 end_time <- Sys.time()
-start_time-end_time
+end_time-start_time
 str(pitdata)
 
-#write.csv(pitdata,"alldata.csv")
+write.csv(pitdata,"alldata.csv")
