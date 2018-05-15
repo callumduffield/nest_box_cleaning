@@ -3,5 +3,5 @@
 .RData
 .Ruserdata
 .gitignore
-!*/data/time_test.csv
+!data/time_test.csv
 data
